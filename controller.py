@@ -33,13 +33,23 @@ def show_chat(username):
       
     return render_template("chat.html", messages = specific_messages, username=username)
     
-
+@app.route("/hash/<topic>")
+def show_topic(topic):
+    topic_list = []
+    for i in messages: 
+        if topic in i:
+            topic_list.append(i)
+    return render_template("hash.html", topic=topic, topics = topic_list[:-1])
     
+
 @app.route("/new", methods = ["POST"])
 def show_add():
     message = request.form["message"]
     username = request.form["username"]
     messages.append(username + ": " + message)
+    if message.startswith("#"):
+        topic = message[1:len(message)]
+        return redirect("/hash/" + topic)
     return redirect("/chat/" + username)
     
 if __name__ == "__main__":
