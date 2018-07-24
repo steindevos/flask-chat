@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-
 <body>
-
-    {% for message in messages %}
-    <p>{{message}}</p>
-    {% endfor %} 
+    <h1>Join Flaskchat</h1>
     
-    <hr>
-
-    <form method="post" type="textarea" action="/add">
-        <input type="text" name="message" value="" />
-        <input type="submit" />
+    <p>Please enter your username and click "join"</p>
+    
+    <form action="/join">
+        <input type="text" name="username" />
+        <input type="submit" value="Join" />
     </form>
-
-
 </body>
-
 </html>
