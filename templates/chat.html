@@ -5,24 +5,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
     <title>Document</title>
+    <style>
+    .chat-section {
+        max-height: 80vh;
+        color: grey;
+    }
+    
+    h3 {
+        color: black;
+    }
+    </style>
 </head>
 
 <body>
+    <header class="container-fluid">
+        <div class="row text-center">
+            <h1>FlaskChat</h1>
+            <hr>
+        </div>
+    </header>
+    
+    <section class="container-fluid">
+        <div class="row chat-section">
+            <div class="col-sm-9 col-xs-12">
+                <h3>Chat</h3>
+                {% for message in messages %}
+                <p>{{message}}</p>
+                {% endfor %}
+                 <hr>
+                <form method="post" type="textarea" action="/new">
+                    <p><input type="text" name="message" value="" /></p>
+                    <p><input type="hidden" name="username" value="{{username}}" /></p>
+                    <p><input type="submit" /></p>
+                </form>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+                <h3>What's trending?</h3>
+                {% for key, value in top_tags %}
+                <ul>
+                    <li><a href="{{username}}/tags/{{key}}">#{{key}} ({{value}})</a></li>
+                </ul>
+                {% endfor %}
+              
+            </div>
 
-    {% for message in messages %}
-    <p>{{message}}</p>
-    {% endfor %}
-
-    <hr>
-
-    <form method="post" type="textarea" action="/new">
-        <p><input type="text" name="message" value="" /></p>
-        <p><input type="hidden" name="username" value="{{username}}" /></p>
-        <p><input type="submit" /></p>
-    </form>
+        </div>
+    </section>
 
 
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 
 </html>

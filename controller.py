@@ -1,12 +1,15 @@
 from flask import Flask, request, render_template, redirect
+from collections import Counter
+import collections
+import re
 
 app = Flask(__name__)
 
-messages = [
-    "Stein: whasdfs", 
-    "Piet: sdflkjsdf",
-    "Henk: nooo!"
-    ]
+messages = []
+tags = []
+
+
+
 
 @app.route("/")
 def show_join():
@@ -26,20 +29,22 @@ def can_view(message, username):
 
 @app.route("/chat/<username>")
 def show_chat(username):
+    top_tags = Counter(tags)
+    top_ten = top_tags.most_common(10)
     specific_messages = []
     for i in messages:
         if can_view(i, username):
             specific_messages.append(i)
       
-    return render_template("chat.html", messages = specific_messages, username=username)
+    return render_template("chat.html", messages = specific_messages, username=username, tags=tags, top_tags=top_ten)
     
-@app.route("/hash/<topic>")
-def show_topic(topic):
-    topic_list = []
+@app.route("/chat/<username>/tags/<hashtag>")
+def show_topic(hashtag, username):
+    hash_list = []
     for i in messages: 
-        if topic in i:
-            topic_list.append(i)
-    return render_template("hash.html", topic=topic, topics = topic_list[:-1])
+        if "#" + hashtag in i:
+            hash_list.append(i)
+    return render_template("chat.html", messages = hash_list, username=username)
     
 
 @app.route("/new", methods = ["POST"])
@@ -47,9 +52,13 @@ def show_add():
     message = request.form["message"]
     username = request.form["username"]
     messages.append(username + ": " + message)
-    if message.startswith("#"):
-        topic = message[1:len(message)]
-        return redirect("/hash/" + topic)
+    
+    hash_message = message.split(" ")
+    for word in hash_message:
+        for character in word: 
+            if character == "#":
+                tags.append(word[1:])
+            
     return redirect("/chat/" + username)
     
 if __name__ == "__main__":
